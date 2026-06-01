@@ -71,10 +71,19 @@ konkowski2/
 ├── index.html
 ├── README.md
 ├── .gitignore
+├── shared/                 # współdzielona konfiguracja (DRY)
+│   └── formats.js
 ├── src/                    # frontend React
 │   ├── main.jsx
 │   ├── App.jsx
-│   └── styles.css
+│   ├── styles.css
+│   ├── config/
+│   │   └── formats.js      # re-export formatów
+│   ├── hooks/
+│   │   └── useDownloader.js # custom hook (SRP)
+│   └── utils/
+│       ├── errors.js       # klasy błędów
+│       └── statusUtils.js  # pomocnicze funkcje
 ├── server/                 # backend Express
 │   └── index.js
 └── downloads/              # pliki tymczasowe (auto-czyszczone)
@@ -86,4 +95,9 @@ Aplikacja edukacyjna. Pobieraj wyłącznie treści, do których masz prawo.
 
 ## Historia wersji
 
-- **0.01 Alpha** – React + Node backend, pobieranie MP4/MP3/M4A, pasek postępu.
+- **1.00** – Clean Code: Proper Error Handling - klasy błędów, przyjazne komunikaty
+- **0.80** – Clean Code: JSDoc Documentation - dokumentacja funkcji, opisowe nazwy
+- **0.60** – Clean Code: DRY - współdzielona konfiguracja formatów (shared/)
+- **0.40** – Clean Code: Extract Functions / SRP - custom hook useDownloader, utils
+- **0.20** – Clean Code: Meaningful Names - opisowe nazwy zmiennych
+- **0.01 Alpha** – React + Node backend, pobieranie MP4/MP3/M4A, pasek postępu
