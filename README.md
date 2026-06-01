@@ -113,3 +113,35 @@ Aplikacja edukacyjna. Pobieraj wyłącznie treści, do których masz prawo.
 - **0.3** – Etap 3: Komentarze w HTML, CSS, JS, PHP, Python
 - **0.2** – Etap 2: Clean Code (Meaningful Names, SRP, DRY, JSDoc, Error Handling)
 - **0.1** – Etap 1: React + Node backend, pobieranie MP4/MP3/M4A, pasek postępu
+
+## Gdzie umieścić pliki `.exe` (yt-dlp i FFmpeg)
+
+Najprościej i najpewniej — dodaj folder z `yt-dlp.exe` i `ffmpeg.exe` do systemowej zmiennej `PATH`. Dzięki temu serwer uruchamiany z katalogu projektu znajdzie te narzędzia bez dodatkowej konfiguracji.
+
+
+- Rekomendowane miejsce (przykład): utwórz folder `bin` w katalogu projektu (ścieżka względna: `./bin`) i wrzuć tam `yt-dlp.exe` oraz `ffmpeg.exe`.
+- Dodaj ten folder do `PATH` tymczasowo (PowerShell - tylko na sesję):
+
+```powershell
+$env:Path += ';' + (Resolve-Path .\bin).Path
+```
+
+- Aby dodać folder trwale (PowerShell - użytkownik):
+
+```powershell
+[Environment]::SetEnvironmentVariable('Path', $env:Path + ';' + (Resolve-Path .\bin).Path, 'User')
+```
+
+- Alternatywa: zainstaluj `yt-dlp` i `ffmpeg` przez menedżera pakietów (np. `winget` lub `choco`), wtedy instalator zwykle umieszcza je w katalogu już obecnym w `PATH`.
+
+- Weryfikacja (PowerShell lub CMD):
+
+```powershell
+where.exe yt-dlp
+where.exe ffmpeg
+# albo w PowerShell: Get-Command yt-dlp, Get-Command ffmpeg
+```
+
+- Ważne: pliki muszą mieć nazwy `yt-dlp.exe` i `ffmpeg.exe` (wersje dla Windows). Jeśli serwer nadal nie znajduje narzędzi, uruchom konsolę ponownie (zmienna `PATH` załaduje się dla nowych sesji).
+
+Uwaga: projekt uruchamia w backendzie polecenia `yt-dlp` i `ffmpeg` jako programy systemowe — nie kopiujemy plików do repozytorium binarnego. Umieszczenie plików w folderze projektu i dodanie tego folderu do `PATH` jest więc najprostsze dla środowiska szkolnego.
