@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { NetworkError, ServerError, getUserFriendlyErrorMessage } from "../utils/errors";
 
 /**
@@ -12,6 +12,16 @@ export function useDownloader() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const pollIntervalRef = useRef(null);
+
+  // [BUG FIX] Cleanup przy odmontowaniu - zapobiega wyciekom pamięci
+  useEffect(() => {
+    return () => {
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+        pollIntervalRef.current = null;
+      }
+    };
+  }, []);
 
   const resetState = useCallback(() => {
     setStatus(null);
@@ -61,6 +71,9 @@ export function useDownloader() {
   }, []);
 
   const startDownload = useCallback(async (url, format) => {
+    // [BUG FIX] Guard przeciw race condition - zapobiega duplikatom zadań
+    if (loading) return false;
+    
     resetState();
     setLoading(true);
 
@@ -90,7 +103,7 @@ export function useDownloader() {
       setLoading(false);
       return false;
     }
-  }, [resetState, pollJobStatus]);
+  }, [loading, resetState, pollJobStatus]);
 
   return {
     jobId,

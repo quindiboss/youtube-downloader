@@ -106,9 +106,10 @@ const JOBS = new Map();
 // (https?:\/\/)? - opcjonalny protokół http:// lub https://
 // (www\.)? - opcjonalne www.
 // (youtube\.com|youtu\.be|m\.youtube\.com) - dozwolone domeny
-// \/.+ - slash i cokolwiek po nim (identyfikator wideo)
+// \/(watch|shorts|v|embed|live)? - różne typy ścieżek YouTube
 // /i - case-insensitive (ignoruj wielkość liter)
-const YT_REGEX = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|m\.youtube\.com)\/.+/i;
+// [BUG FIX] Dodano obsługę YouTube Shorts, embed, live
+const YT_REGEX = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|m\.youtube\.com)\/(watch|shorts|v|embed|live)?.*/i;
 
 // ==================== FUNKCJA BUDUJĄCA ARGUMENTY YT-DLP ====================
 
