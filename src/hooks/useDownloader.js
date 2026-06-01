@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import { NetworkError, ServerError, getUserFriendlyErrorMessage } from "../utils/errors";
 
 /**
  * Custom hook do obsługi pobierania plików z YouTube
@@ -27,6 +28,11 @@ export function useDownloader() {
     pollIntervalRef.current = setInterval(async () => {
       try {
         const response = await fetch(`/api/status/${id}`);
+        
+        if (!response.ok) {
+          throw new ServerError("Błąd sprawdzania statusu", response.status);
+        }
+        
         const data = await response.json();
         
         setStatus(data.status);
@@ -37,13 +43,18 @@ export function useDownloader() {
           pollIntervalRef.current = null;
           setLoading(false);
           if (data.status === "error") {
-            setError(data.error || "Nieznany błąd.");
+            setError(data.error || "Nieznany błąd pobierania.");
           }
         }
-      } catch {
+      } catch (err) {
         clearInterval(pollIntervalRef.current);
         pollIntervalRef.current = null;
-        setError("Utracono połączenie z serwerem.");
+        
+        const friendlyMessage = err instanceof ServerError 
+          ? getUserFriendlyErrorMessage(err)
+          : getUserFriendlyErrorMessage(new NetworkError());
+        
+        setError(friendlyMessage);
         setLoading(false);
       }
     }, 1000);
@@ -59,20 +70,23 @@ export function useDownloader() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, format }),
       });
+      
       const data = await response.json();
       
       if (!response.ok) {
-        setError(data.error || "Błąd serwera");
-        setLoading(false);
-        return false;
+        throw new ServerError(data.error || "Błąd serwera", response.status);
       }
       
       setJobId(data.job_id);
       setStatus("queued");
       pollJobStatus(data.job_id);
       return true;
-    } catch {
-      setError("Błąd połączenia z serwerem.");
+    } catch (err) {
+      const friendlyMessage = err instanceof ServerError
+        ? getUserFriendlyErrorMessage(err)
+        : getUserFriendlyErrorMessage(new NetworkError());
+      
+      setError(friendlyMessage);
       setLoading(false);
       return false;
     }
