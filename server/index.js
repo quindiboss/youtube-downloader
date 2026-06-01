@@ -67,20 +67,28 @@ app.post("/api/start", (req, res) => {
   // Używa lokalnego yt-dlp z folderu bin/ (lub z PATH jako fallback)
   const proc = spawn(YT_DLP_CMD, args, { windowsHide: true });
 
-  proc.stdout.on("data", (chunk) => {
-    const text = chunk.toString();
-    const job = JOBS.get(jobId);
-    if (!job) return;
-    const m = text.match(/\[download\]\s+(\d+(?:\.\d+)?)%/);
-    if (m) {
-      job.status = "downloading";
-      job.progress = parseFloat(m[1]);
+  proc.stdout.on("data", (outputChunk) => {
+    const stdoutText = outputChunk.toString();
+    const currentJob = JOBS.get(jobId);
+    if (!currentJob) return;
+    
+    const progressMatch = stdoutText.match(/\[download\]\s+(\d+(?:\.\d+)?)%/);
+    if (progressMatch) {
+      currentJob.status = "downloading";
+      currentJob.progress = parseFloat(progressMatch[1]);
     }
-    if (text.includes("[ExtractAudio]") || text.includes("[Merger]") || text.includes("Destination:")) {
-      job.status = "processing";
+    
+    const isProcessingPhase = stdoutText.includes("[ExtractAudio]") || 
+                               stdoutText.includes("[Merger]") || 
+                               stdoutText.includes("Destination:");
+    if (isProcessingPhase) {
+      currentJob.status = "processing";
     }
-    const dest = text.match(/\[(?:Merger|ExtractAudio|download)\]\s+(?:Merging formats into|Destination:)\s+"?(.+?)"?\s*$/m);
-    if (dest) job.lastFile = dest[1];
+    
+    const destinationMatch = stdoutText.match(/\[(?:Merger|ExtractAudio|download)\]\s+(?:Merging formats into|Destination:)\s+"?(.+?)"?\s*$/m);
+    if (destinationMatch) {
+      currentJob.lastFile = destinationMatch[1];
+    }
   });
 
   proc.stderr.on("data", (chunk) => {

@@ -110,8 +110,10 @@ export default function App() {
             value={format}
             onChange={(e) => setFormat(e.target.value)}
           >
-            {FORMATS.map((f) => (
-              <option key={f.value} value={f.value}>{f.label}</option>
+            {FORMATS.map((formatOption) => (
+              <option key={formatOption.value} value={formatOption.value}>
+                {formatOption.label}
+              </option>
             ))}
           </select>
 
