@@ -42,7 +42,8 @@ const { spawn } = require("child_process");
 
 // Import współdzielonej konfiguracji formatów (zasada DRY)
 const { ALLOWED_FORMAT_VALUES } = require("../shared/formats.js");
-const { YT_REGEX, buildYtDlpArguments } = require("./utils.js");
+const { YT_REGEX, TT_REGEX, buildYtDlpArguments } = require("./utils.js");
+const { convertFile, ALLOWED_CONVERSION_VALUES } = require("./converter.js");
 
 // ==================== KONFIGURACJA SERWERA ====================
 
@@ -290,6 +291,33 @@ app.get("/api/file/:id", (req, res) => {
       }
     }, 5000);
   });
+});
+
+// ==================== ENDPOINT: KONWERSJA PLIKU ====================
+
+/**
+ * POST /api/convert
+ * Konwertuje plik z jednego formatu na inny
+ * Body: { inputFile: string, conversionType: string }
+ */
+app.post("/api/convert", async (req, res) => {
+  const { inputFile, conversionType } = req.body || {};
+
+  if (!inputFile || !conversionType) {
+    return res.status(400).json({ error: "Brakuje parametrów." });
+  }
+
+  if (!fs.existsSync(inputFile)) {
+    return res.status(400).json({ error: "Plik nie istnieje." });
+  }
+
+  const result = await convertFile(inputFile, conversionType, DOWNLOAD_DIR);
+  
+  if (result.success) {
+    res.json({ success: true, file: result.file });
+  } else {
+    res.status(500).json({ error: result.error });
+  }
 });
 
 // ==================== URUCHOMIENIE SERWERA ====================

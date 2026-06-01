@@ -2,8 +2,9 @@ const path = require("path");
 const fs = require("fs");
 const { ALLOWED_FORMAT_VALUES } = require("../shared/formats.js");
 
-// Wyrażenie regularne do walidacji URL-i YouTube
+// Wyrażenie regularne do walidacji URL-i YouTube i TikTok
 const YT_REGEX = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|m\.youtube\.com)\/(watch|shorts|v|embed|live)?.*/i;
+const TT_REGEX = /^(https?:\/\/)?(www\.|vm\.)?tiktok\.com\/.*/i;
 
 /**
  * Generuje tablicę argumentów dla procesu yt-dlp
@@ -75,5 +76,6 @@ function buildYtDlpArguments(format, outputTemplate) {
 module.exports = {
   ALLOWED_FORMAT_VALUES,
   YT_REGEX,
+  TT_REGEX,
   buildYtDlpArguments,
 };

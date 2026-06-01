@@ -1,6 +1,6 @@
 const assert = require("node:assert/strict");
 const { describe, it } = require("node:test");
-const { buildYtDlpArguments, YT_REGEX } = require("./utils.js");
+const { buildYtDlpArguments, YT_REGEX, TT_REGEX } = require("./utils.js");
 
 describe("buildYtDlpArguments", () => {
   it("should build MP3 extraction arguments", () => {
@@ -36,5 +36,19 @@ describe("YT_REGEX", () => {
 
   it("should reject invalid URLs", () => {
     assert.equal(YT_REGEX.test("https://example.com/video"), false);
+  });
+});
+
+describe("TT_REGEX", () => {
+  it("should accept standard TikTok URLs", () => {
+    assert.equal(TT_REGEX.test("https://www.tiktok.com/@user/video/123456789"), true);
+  });
+
+  it("should accept short TikTok URLs (vm.tiktok.com)", () => {
+    assert.equal(TT_REGEX.test("https://vm.tiktok.com/abc123"), true);
+  });
+
+  it("should reject non-TikTok URLs", () => {
+    assert.equal(TT_REGEX.test("https://youtube.com/watch?v=abc"), false);
   });
 });

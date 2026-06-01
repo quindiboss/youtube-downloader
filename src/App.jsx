@@ -28,19 +28,19 @@ export default function App() {
   return (
     <div className="container">
       <header>
-        <h1>🎬 YouTube Downloader</h1>
-        <p className="subtitle">Pobierz filmy z YouTube w wybranym formacie</p>
+        <h1>🎬 Multimedia Downloader & Converter</h1>
+        <p className="subtitle">Pobierz i konwertuj multimedia z YouTube i TikToka</p>
       </header>
 
       <main>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="url">Link YouTube:</label>
+          <label htmlFor="url">Link YouTube / TikTok:</label>
           <input
             id="url"
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://www.youtube.com/watch?v=..."
+            placeholder="https://www.youtube.com/watch?v=... lub https://www.tiktok.com/@user/video/..."
             required
             autoComplete="off"
           />
@@ -112,7 +112,7 @@ export default function App() {
       </main>
 
       <footer>
-        <p>PROJOPP_AP_e7 · React · ver. 0.7</p>
+        <p>PROJOPP_AP_Final · React · ver. Final 1.0</p>
         <p className="disclaimer">Pobieraj wyłącznie treści, do których masz prawo.</p>
       </footer>
     </div>

@@ -1,14 +1,14 @@
-# PROJOPP_AP_e7 - YouTube Downloader (React)
+# PROJOPP_AP_Final - Multimedia Downloader & Converter
 
-**Wersja:** 0.7
+**Wersja:** Final 1.0
 **Autor:** QUINDI
-**Etap:** e7
-**Stos:** React (Vite) + Node.js/Express + yt-dlp
+**Etap:** e8 Final
+**Stos:** React (Vite) + Node.js/Express + yt-dlp + FFmpeg
 
 ## Cel aplikacji
 
-Aplikacja webowa umożliwiająca pobieranie filmów z YouTube w różnych
-formatach (MP4 w wybranej rozdzielczości lub samo audio MP3/M4A).
+Aplikacja webowa umożliwiająca pobieranie i konwertowanie multimedia z YouTube i TikToka
+w różnych formatach (MP4 w wybranej rozdzielczości, audio MP3/M4A i 15+ formatów konwersji).
 Frontend napisany w **React**, backend w **Node.js (Express)**.
 
 ## Jak działa (zasada)
@@ -108,6 +108,7 @@ Aplikacja edukacyjna. Pobieraj wyłącznie treści, do których masz prawo.
 
 ## Historia wersji
 
+- **Final 1.0** – Etap 8 Final: TikTok + konwerter formatów (15+ opcji)
 - **0.7** – Etap 7: Testowanie aplikacji (unit testy + dokumentacja testów)
 - **0.6** – Etap 6: UI z wyborem jakości wideo (przyciski jakości)
 - **0.5** – Etap 5: Debugowanie (YouTube Shorts, memory leak, race condition)
