@@ -1,8 +1,8 @@
-# PROJOPP_AP_e1 - YouTube Downloader (React)
+# PROJOPP_AP_e6 - YouTube Downloader (React)
 
-**Wersja:** 0.5
-**Autor:** konkowski2
-**Etap:** e1
+**Wersja:** 0.6
+**Autor:** QUINDI
+**Etap:** e6
 **Stos:** React (Vite) + Node.js/Express + yt-dlp
 
 ## Cel aplikacji
@@ -28,7 +28,8 @@ Frontend napisany w **React**, backend w **Node.js (Express)**.
 ## Interakcja z użytkownikiem (mechanizm)
 
 - **Pole tekstowe** na link YouTube + walidacja URL.
-- **Lista rozwijana z formatami:** MP4 best / 1080p / 720p, MP3 192kbps, M4A.
+- **Lista rozwijana z formatami:** MP4, MP3, M4A.
+- **Szybkie przyciski jakości wideo** widoczne tylko dla MP4: 720p, 1080p, najlepsza jakość.
 - **Przycisk "Pobierz"** – wysyła żądanie i przełącza UI w tryb pracy.
 - **Pasek postępu** aktualizowany w czasie rzeczywistym (kolejka → pobieranie
   → przetwarzanie → gotowe).
@@ -95,6 +96,7 @@ Aplikacja edukacyjna. Pobieraj wyłącznie treści, do których masz prawo.
 
 ## Historia wersji
 
+- **0.6** – Etap 6: UI z wyborem jakości wideo (przyciski jakości)
 - **0.5** – Etap 5: Debugowanie (YouTube Shorts, memory leak, race condition)
 - **0.4** – Etap 4: Prezentacja projektu
 - **0.3** – Etap 3: Komentarze w HTML, CSS, JS, PHP, Python

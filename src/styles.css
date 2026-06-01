@@ -159,6 +159,42 @@ button:disabled {
   cursor: not-allowed;    /* Kursor niedozwolony */
 }
 
+.quality-picker p {
+  margin-bottom: 10px;
+  opacity: 0.85;
+  font-size: 0.95rem;
+}
+
+.quality-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.quality-option {
+  flex: 1 1 calc(33.333% - 8px);
+  min-width: 110px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.quality-option:hover:not(:disabled) {
+  transform: none;
+  background: rgba(233, 69, 96, 0.18);
+}
+
+.quality-option.selected {
+  border-color: #e94560;
+  background: rgba(233, 69, 96, 0.25);
+}
+
 /* ==================== SEKCJE STATUSU ==================== */
 
 .status, .result, .error {

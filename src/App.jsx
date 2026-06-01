@@ -1,17 +1,26 @@
 import { useState } from "react";
 import { useDownloader } from "./hooks/useDownloader";
-import { FORMATS } from "./config/formats";
+import { FORMATS, DEFAULT_FORMAT } from "./config/formats";
 import { getStatusText } from "./utils/statusUtils";
+
+const MAIN_FORMATS = [
+  { value: "mp4", label: "MP4 (wideo)" },
+  { value: "mp3", label: "MP3 (audio)" },
+  { value: "m4a", label: "M4A (audio)" },
+];
 
 export default function App() {
   const [url, setUrl] = useState("");
-  const [format, setFormat] = useState("mp4-best");
-  
+  const [containerFormat, setContainerFormat] = useState("mp4");
+  const [videoQuality, setVideoQuality] = useState(DEFAULT_FORMAT);
+
   const { jobId, status, progress, error, loading, startDownload } = useDownloader();
+  const videoQualityOptions = FORMATS.filter((option) => option.value.startsWith("mp4"));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await startDownload(url, format);
+    const selectedFormat = containerFormat === "mp4" ? videoQuality : containerFormat;
+    await startDownload(url, selectedFormat);
   };
 
   const statusText = () => getStatusText(status, progress);
@@ -39,15 +48,41 @@ export default function App() {
           <label htmlFor="format">Format:</label>
           <select
             id="format"
-            value={format}
-            onChange={(e) => setFormat(e.target.value)}
+            value={containerFormat}
+            onChange={(e) => setContainerFormat(e.target.value)}
           >
-            {FORMATS.map((formatOption) => (
-              <option key={formatOption.value} value={formatOption.value}>
-                {formatOption.label}
+            {MAIN_FORMATS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
             ))}
           </select>
+
+          {containerFormat === "mp4" ? (
+            <div className="quality-picker">
+              <p>Wybierz jakość wideo:</p>
+              <div className="quality-buttons">
+                {videoQualityOptions.map((qualityOption) => (
+                  <button
+                    type="button"
+                    key={qualityOption.value}
+                    className={
+                      videoQuality === qualityOption.value
+                        ? "quality-option selected"
+                        : "quality-option"
+                    }
+                    onClick={() => setVideoQuality(qualityOption.value)}
+                  >
+                    {qualityOption.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="quality-picker audio-note">
+              <p>Wybrano format audio. Jakość wideo nie dotyczy.</p>
+            </div>
+          )}
 
           <button type="submit" disabled={loading}>
             {loading ? "Przetwarzanie..." : "Pobierz"}
@@ -77,7 +112,7 @@ export default function App() {
       </main>
 
       <footer>
-        <p>PROJOPP_AP_e1 · React · ver. 0.01 Alpha</p>
+        <p>PROJOPP_AP_e6 · React · ver. 0.6</p>
         <p className="disclaimer">Pobieraj wyłącznie treści, do których masz prawo.</p>
       </footer>
     </div>
