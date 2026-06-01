@@ -73,7 +73,7 @@ Następnie w przeglądarce: **http://localhost:5173**
 ## Struktura projektu
 
 ```
-konkowski2/
+./
 ├── package.json
 ├── vite.config.js
 ├── index.html
