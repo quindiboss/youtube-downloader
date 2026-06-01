@@ -1,6 +1,6 @@
 {
   "name": "projopp-ap-e1",
-  "version": "0.60",
+  "version": "0.80",
   "private": true,
   "description": "YouTube Downloader - React + Node backend",
   "scripts": {
