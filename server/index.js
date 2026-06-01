@@ -8,6 +8,7 @@ const path = require("path");
 const fs = require("fs");
 const crypto = require("crypto");
 const { spawn } = require("child_process");
+const { ALLOWED_FORMAT_VALUES } = require("../shared/formats.js");
 
 const app = express();
 const PORT = 3001;
@@ -53,8 +54,7 @@ app.post("/api/start", (req, res) => {
   if (!url || !YT_REGEX.test(url)) {
     return res.status(400).json({ error: "Nieprawidłowy link YouTube." });
   }
-  const allowed = ["mp4-best", "mp4-1080", "mp4-720", "mp3", "m4a"];
-  if (!allowed.includes(format)) {
+  if (!ALLOWED_FORMAT_VALUES.includes(format)) {
     return res.status(400).json({ error: "Nieobsługiwany format." });
   }
 
