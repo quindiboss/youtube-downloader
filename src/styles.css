@@ -1,122 +1,264 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/**
+ * ============================================================
+ * PROJOPP_AP_e3 - YouTube Downloader - Style CSS
+ * Plik zawiera wszystkie style wizualne aplikacji
+ * Autor: konkowski2
+ * Wersja: 1.00
+ * ============================================================
+ */
+
+/* ==================== RESET CSS ==================== */
+/* Resetowanie domyślnych stylów przeglądarki dla spójności */
+
+* {
+  /* box-sizing: border-box - padding i border wliczane do szerokości */
+  /* Ułatwia obliczanie wymiarów elementów */
+  box-sizing: border-box;
+  
+  /* Usunięcie domyślnych marginesów i paddingów */
+  margin: 0;
+  padding: 0;
+}
+
+/* ==================== STYLE GŁÓWNE BODY ==================== */
 
 body {
+  /* Czcionka systemowa - szybkie ładowanie */
   font-family: 'Segoe UI', Tahoma, sans-serif;
+  
+  /* Gradient tła - trzy kolory tworzące efekt głębi */
+  /* 135deg - kierunek od lewego górnego rogu */
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  
+  /* Minimalna wysokość - zajmuje całą wysokość okna */
   min-height: 100vh;
+  
+  /* Biały tekst - kontrast na ciemnym tle */
   color: #fff;
+  
+  /* Flexbox do centrowania zawartości */
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center;    /* Centrowanie pionowe */
+  justify-content: center; /* Centrowanie poziome */
+  
+  /* Padding - odstęp od krawędzi na mobile */
   padding: 20px;
 }
 
+/* ==================== KONTENER GŁÓWNY ==================== */
+/* Glassmorphism - efekt szklanego interfejsu */
+
 .container {
+  /* Półprzezroczyste białe tło */
   background: rgba(255, 255, 255, 0.05);
+  
+  /* Rozmycie tła - efekt szkła */
   backdrop-filter: blur(10px);
+  
+  /* Subtelna ramka */
   border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  /* Zaokrąglone rogi */
   border-radius: 16px;
+  
+  /* Padding wewnętrzny */
   padding: 40px;
+  
+  /* Maksymalna szerokość dla czytelności */
   max-width: 560px;
   width: 100%;
+  
+  /* Cień - efekt unoszenia */
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
-header { text-align: center; margin-bottom: 30px; }
-header h1 { font-size: 2rem; margin-bottom: 8px; }
-.subtitle { opacity: 0.7; font-size: 0.95rem; }
+/* ==================== NAGŁÓWEK ==================== */
 
-form { display: flex; flex-direction: column; gap: 12px; }
-label { font-size: 0.9rem; opacity: 0.85; margin-top: 8px; }
+header {
+  text-align: center;     /* Centrowanie tekstu */
+  margin-bottom: 30px;    /* Odstęp od formularza */
+}
+
+header h1 {
+  font-size: 2rem;        /* Duży rozmiar tytułu */
+  margin-bottom: 8px;     /* Odstęp od podtytułu */
+}
+
+.subtitle {
+  opacity: 0.7;           /* Mniejsza widoczność */
+  font-size: 0.95rem;     /* Mniejsza czcionka */
+}
+
+/* ==================== FORMULARZ ==================== */
+
+form {
+  display: flex;          /* Flexbox */
+  flex-direction: column; /* Elementy w kolumnie */
+  gap: 12px;              /* Odstępy między elementami */
+}
+
+label {
+  font-size: 0.9rem;      /* Mniejsza czcionka etykiet */
+  opacity: 0.85;          /* Lekka przezroczystość */
+  margin-top: 8px;        /* Odstęp od góry */
+}
+
+/* ==================== POLA WEJŚCIOWE ==================== */
 
 input, select {
-  padding: 12px 14px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  color: #fff;
-  font-size: 1rem;
-  outline: none;
-  transition: border 0.2s;
-  font-family: inherit;
+  padding: 12px 14px;     /* Wewnętrzny padding */
+  background: rgba(0, 0, 0, 0.3);  /* Ciemne tło */
+  border: 1px solid rgba(255, 255, 255, 0.15);  /* Ramka */
+  border-radius: 8px;     /* Zaokrąglenie rogów */
+  color: #fff;            /* Biały tekst */
+  font-size: 1rem;        /* Rozmiar czcionki */
+  outline: none;          /* Usunięcie outline */
+  transition: border 0.2s; /* Animacja focus */
+  font-family: inherit;   /* Dziedziczenie czcionki */
 }
-input:focus, select:focus { border-color: #e94560; }
-select option { background: #1a1a2e; }
+
+/* Stan focus - aktywne pole */
+input:focus, select:focus {
+  border-color: #e94560;  /* Czerwona ramka przy focus */
+}
+
+/* Opcje w select */
+select option {
+  background: #1a1a2e;    /* Ciemne tło opcji */
+}
+
+/* ==================== PRZYCISK GŁÓWNY ==================== */
 
 button {
-  margin-top: 16px;
-  padding: 14px;
+  margin-top: 16px;       /* Odstęp od pola powyżej */
+  padding: 14px;          /* Duży padding dla łatwego klikania */
+  
+  /* Gradient tła - wyróżnienie przycisku */
   background: linear-gradient(135deg, #e94560, #c73650);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.05rem;
-  font-weight: 600;
-  cursor: pointer;
+  
+  color: #fff;            /* Biały tekst */
+  border: none;           /* Brak ramki */
+  border-radius: 8px;     /* Zaokrąglenie */
+  font-size: 1.05rem;     /* Rozmiar tekstu */
+  font-weight: 600;       /* Pogrubienie */
+  cursor: pointer;        /* Kursor wskazujący */
+  
+  /* Animacje przy hover */
   transition: transform 0.15s, box-shadow 0.2s;
 }
+
+/* Efekt hover - unoszenie się przycisku */
 button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(233, 69, 96, 0.4);
+  transform: translateY(-2px);  /* Przesunięcie w górę */
+  box-shadow: 0 8px 20px rgba(233, 69, 96, 0.4);  /* Świecący cień */
 }
-button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Stan wyłączony */
+button:disabled {
+  opacity: 0.5;           /* Przezroczystość */
+  cursor: not-allowed;    /* Kursor niedozwolony */
+}
+
+/* ==================== SEKCJE STATUSU ==================== */
 
 .status, .result, .error {
-  margin-top: 24px;
-  padding: 18px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.25);
+  margin-top: 24px;       /* Odstęp od formularza */
+  padding: 18px;          /* Wewnętrzny padding */
+  border-radius: 10px;    /* Zaokrąglenie */
+  background: rgba(0, 0, 0, 0.25);  /* Ciemne tło */
 }
 
-.status-text { margin-bottom: 10px; font-size: 0.95rem; }
+/* ==================== PASEK POSTĘPU ==================== */
+
+.status-text {
+  margin-bottom: 10px;    /* Odstęp od paska */
+  font-size: 0.95rem;
+}
 
 .progress-bar {
-  height: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
-  overflow: hidden;
+  height: 10px;           /* Wysokość paska */
+  background: rgba(255, 255, 255, 0.1);  /* Tło (puste) */
+  border-radius: 5px;     /* Zaokrąglenie */
+  overflow: hidden;       /* Ukrycie nadmiaru */
 }
+
 .progress-fill {
-  height: 100%;
+  height: 100%;           /* Pełna wysokość */
+  
+  /* Gradient wypełnienia */
   background: linear-gradient(90deg, #e94560, #f39c12);
-  transition: width 0.3s;
+  
+  transition: width 0.3s; /* Płynna animacja */
 }
+
 .progress-percent {
-  margin-top: 6px;
-  text-align: right;
+  margin-top: 6px;        /* Odstęp od paska */
+  text-align: right;      /* Wyrównanie do prawej */
   font-size: 0.85rem;
   opacity: 0.75;
 }
 
+/* ==================== WYNIK SUKCESU ==================== */
+
 .result {
   text-align: center;
-  background: rgba(46, 204, 113, 0.15);
-  border: 1px solid rgba(46, 204, 113, 0.3);
+  background: rgba(46, 204, 113, 0.15);  /* Zielonkawe tło */
+  border: 1px solid rgba(46, 204, 113, 0.3);  /* Zielona ramka */
 }
-.result p { margin-bottom: 12px; font-size: 1.1rem; }
+
+.result p {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+
+/* ==================== PRZYCISK POBIERANIA ==================== */
 
 .download-btn {
-  display: inline-block;
+  display: inline-block;  /* Dla paddingu */
   padding: 12px 24px;
-  background: #2ecc71;
+  background: #2ecc71;    /* Zielone tło */
   color: #fff;
-  text-decoration: none;
+  text-decoration: none;  /* Usunięcie podkreślenia */
   border-radius: 8px;
   font-weight: 600;
   transition: background 0.2s;
 }
-.download-btn:hover { background: #27ae60; }
+
+.download-btn:hover {
+  background: #27ae60;    /* Ciemniejszy zielony */
+}
+
+/* ==================== KOMUNIKAT BŁĘDU ==================== */
 
 .error {
-  background: rgba(231, 76, 60, 0.15);
+  background: rgba(231, 76, 60, 0.15);  /* Czerwonawe tło */
   border: 1px solid rgba(231, 76, 60, 0.4);
-  color: #ff9b9b;
+  color: #ff9b9b;         /* Jasnoróżowy tekst */
 }
+
+/* ==================== STOPKA ==================== */
 
 footer {
   margin-top: 32px;
   text-align: center;
   font-size: 0.8rem;
-  opacity: 0.6;
+  opacity: 0.6;           /* Mniejsza widoczność */
 }
-.disclaimer { margin-top: 4px; font-style: italic; }
+
+.disclaimer {
+  margin-top: 4px;
+  font-style: italic;     /* Kursywa dla zastrzeżenia */
+}
+
+/* ==================== RESPONSYWNOŚĆ ==================== */
+/* Style dla ekranów mobilnych */
+
+@media (max-width: 480px) {
+  .container {
+    padding: 24px;        /* Mniejszy padding na mobile */
+  }
+  
+  header h1 {
+    font-size: 1.5rem;    /* Mniejszy tytuł */
+  }
+}

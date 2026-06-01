@@ -1,12 +1,64 @@
 <!DOCTYPE html>
+<!-- 
+  ============================================================
+  PROJOPP_AP_e3 - YouTube Downloader
+  Główny plik HTML aplikacji React (Vite)
+  Autor: konkowski2
+  Wersja: 1.00
+  ============================================================
+-->
+
+<!-- Deklaracja typu dokumentu HTML5 - informuje przeglądarkę o standardzie -->
 <html lang="pl">
+  <!-- Atrybut lang="pl" określa język dokumentu jako polski -->
+  <!-- Ważne dla czytników ekranu i SEO -->
+
   <head>
+    <!-- ==================== SEKCJA HEAD ==================== -->
+    <!-- Zawiera metadane dokumentu, niewidoczne dla użytkownika -->
+    
+    <!-- Kodowanie znaków UTF-8 - obsługuje polskie znaki (ą, ę, ó, etc.) -->
     <meta charset="UTF-8" />
+    
+    <!-- Viewport - responsywność strony na urządzeniach mobilnych -->
+    <!-- width=device-width: szerokość równa szerokości ekranu urządzenia -->
+    <!-- initial-scale=1.0: początkowy zoom ustawiony na 100% -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Tytuł strony - widoczny w zakładce przeglądarki -->
     <title>YT Downloader - PROJOPP_AP_e1</title>
+    
+    <!-- Dodatkowe meta tagi dla SEO i mediów społecznościowych -->
+    <meta name="description" content="Aplikacja do pobierania filmów z YouTube w formatach MP4, MP3, M4A" />
+    <meta name="author" content="konkowski2" />
+    
+    <!-- Kolor paska adresu w przeglądarkach mobilnych -->
+    <meta name="theme-color" content="#1a1a2e" />
   </head>
+
   <body>
+    <!-- ==================== SEKCJA BODY ==================== -->
+    <!-- Zawiera widoczną treść strony -->
+    
+    <!-- Główny kontener aplikacji React -->
+    <!-- React renderuje całą aplikację wewnątrz tego elementu -->
+    <!-- ID "root" jest standardową konwencją w aplikacjach React -->
     <div id="root"></div>
+    
+    <!-- 
+      Skrypt główny aplikacji React
+      type="module" - używa ES Modules (import/export)
+      src="/src/main.jsx" - punkt wejścia aplikacji React
+      Vite automatycznie przetwarza ten plik podczas developmentu
+    -->
     <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- 
+      Noscript - wyświetlane gdy JavaScript jest wyłączony
+      Ważne dla dostępności (accessibility)
+    -->
+    <noscript>
+      <p>Ta aplikacja wymaga włączonego JavaScript do działania.</p>
+    </noscript>
   </body>
 </html>
