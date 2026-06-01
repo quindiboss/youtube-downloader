@@ -39,6 +39,7 @@ const crypto = require("crypto");
 // Child Process - moduł do uruchamiania zewnętrznych programów
 // spawn() uruchamia yt-dlp jako osobny proces
 const { spawn } = require("child_process");
+const multer = require("multer");
 
 // Import współdzielonej konfiguracji formatów (zasada DRY)
 const { ALLOWED_FORMAT_VALUES } = require("../shared/formats.js");
@@ -69,6 +70,8 @@ const BIN_DIR = path.join(ROOT, "bin");
 if (!fs.existsSync(DOWNLOAD_DIR)) {
   fs.mkdirSync(DOWNLOAD_DIR, { recursive: true });
 }
+
+const upload = multer({ dest: DOWNLOAD_DIR });
 
 // ==================== KONFIGURACJA BINAREK ====================
 
@@ -113,9 +116,9 @@ app.post("/api/start", (req, res) => {
   // Destrukturyzacja parametrów z body żądania
   const { url, format } = req.body || {};
   
-  // Walidacja URL - sprawdź czy to prawidłowy link YouTube
-  if (!url || !YT_REGEX.test(url)) {
-    return res.status(400).json({ error: "Nieprawidłowy link YouTube." });
+  // Walidacja URL - sprawdź czy to prawidłowy link YouTube lub TikTok
+  if (!url || (!YT_REGEX.test(url) && !TT_REGEX.test(url))) {
+    return res.status(400).json({ error: "Nieprawidłowy link YouTube lub TikTok." });
   }
   
   // Walidacja formatu - sprawdź czy jest na liście dozwolonych
@@ -300,24 +303,50 @@ app.get("/api/file/:id", (req, res) => {
  * Konwertuje plik z jednego formatu na inny
  * Body: { inputFile: string, conversionType: string }
  */
-app.post("/api/convert", async (req, res) => {
-  const { inputFile, conversionType } = req.body || {};
+app.post("/api/convert", upload.single("file"), async (req, res) => {
+  console.log("[convert] req.body=", req.body);
+  console.log("[convert] req.file=", req.file);
+
+  const { conversionType } = req.body || {};
+  const inputFile = req.file?.path;
 
   if (!inputFile || !conversionType) {
     return res.status(400).json({ error: "Brakuje parametrów." });
   }
 
-  if (!fs.existsSync(inputFile)) {
-    return res.status(400).json({ error: "Plik nie istnieje." });
-  }
-
   const result = await convertFile(inputFile, conversionType, DOWNLOAD_DIR);
-  
+
   if (result.success) {
-    res.json({ success: true, file: result.file });
+    const filename = path.basename(result.file);
+    res.json({
+      success: true,
+      downloadUrl: `/api/converted/${encodeURIComponent(filename)}`,
+      filename,
+    });
   } else {
     res.status(500).json({ error: result.error });
   }
+});
+
+app.get("/api/converted/:filename", (req, res) => {
+  const filename = req.params.filename;
+  const fullPath = path.join(DOWNLOAD_DIR, filename);
+
+  if (!fs.existsSync(fullPath)) {
+    return res.status(404).json({ error: "Plik nie znaleziony." });
+  }
+
+  res.download(fullPath, filename, (err) => {
+    setTimeout(() => {
+      try {
+        if (fs.existsSync(fullPath)) {
+          fs.unlinkSync(fullPath);
+        }
+      } catch (cleanupError) {
+        console.error("Błąd usuwania przekonwertowanego pliku:", cleanupError);
+      }
+    }, 5000);
+  });
 });
 
 // ==================== URUCHOMIENIE SERWERA ====================

@@ -249,19 +249,44 @@ button:disabled {
 
 /* ==================== PRZYCISK POBIERANIA ==================== */
 
+.primary-btn,
 .download-btn {
-  display: inline-block;  /* Dla paddingu */
-  padding: 12px 24px;
-  background: #2ecc71;    /* Zielone tło */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #f97316, #ef4444);
   color: #fff;
-  text-decoration: none;  /* Usunięcie podkreślenia */
-  border-radius: 8px;
-  font-weight: 600;
-  transition: background 0.2s;
+  text-decoration: none;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.primary-btn:hover,
+.download-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(239, 68, 68, 0.24);
+}
+
+.primary-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.download-btn {
+  width: auto;
+  padding: 12px 24px;
+  background: #2ecc71;
 }
 
 .download-btn:hover {
-  background: #27ae60;    /* Ciemniejszy zielony */
+  background: #27ae60;
 }
 
 /* ==================== KOMUNIKAT BŁĘDU ==================== */
@@ -297,4 +322,74 @@ footer {
   header h1 {
     font-size: 1.5rem;    /* Mniejszy tytuł */
   }
+}
+
+/* ==================== ZAKŁADKI (TABS) ==================== */
+
+.tabs-navigation {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab-btn {
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  border-bottom: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-btn i {
+  font-size: 1.1rem;
+}
+
+.tab-btn:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tab-btn.active {
+  color: #fff;
+  border-bottom-color: #ef4444;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ef4444, #f97316);
+  border-radius: 2px;
+}
+
+/* ==================== IKONY W ELEMENTACH ==================== */
+
+button i,
+a i,
+h1 i,
+h2 i,
+label i,
+p i {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+button:disabled i.fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
