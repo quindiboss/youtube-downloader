@@ -55,7 +55,7 @@ Frontend napisany w **React**, backend w **Node.js (Express)**.
 - Uruchom `npm install` aby zainstalować zależności testowe.
 - Wykonaj `npm test` aby uruchomić automatyczne testy jednostkowe.
 - Testy sprawdzają logikę budowania argumentów `yt-dlp` i walidację URL.
-- Dokumentacja testów znajduje się w `docs/TESTOWANIE_E7.md`.
+- Dokumentacja testów jest zawarta bezpośrednio w `README.md`.
 
 ## Instalacja i uruchomienie
 
@@ -97,9 +97,6 @@ konkowski2/
 │   ├── utils.js            # testowalna logika yt-dlp i regex
 │   └── utils.test.js       # unit testy Vitest
 └── downloads/              # pliki tymczasowe (auto-czyszczone)
-
-├── docs/                   # dokumentacja etapów i testowania
-│   └── TESTOWANIE_E7.md
 ```
 
 ## Zastrzeżenie prawne
