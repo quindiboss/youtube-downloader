@@ -112,7 +112,7 @@ export default function App() {
       </main>
 
       <footer>
-        <p>PROJOPP_AP_e6 · React · ver. 0.6</p>
+        <p>PROJOPP_AP_e7 · React · ver. 0.7</p>
         <p className="disclaimer">Pobieraj wyłącznie treści, do których masz prawo.</p>
       </footer>
     </div>

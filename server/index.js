@@ -42,6 +42,7 @@ const { spawn } = require("child_process");
 
 // Import współdzielonej konfiguracji formatów (zasada DRY)
 const { ALLOWED_FORMAT_VALUES } = require("../shared/formats.js");
+const { YT_REGEX, buildYtDlpArguments } = require("./utils.js");
 
 // ==================== KONFIGURACJA SERWERA ====================
 
@@ -97,90 +98,6 @@ app.use(express.json());
 // Map do przechowywania informacji o zadaniach pobierania
 // Klucz: jobId (string), Wartość: obiekt z informacjami o zadaniu
 const JOBS = new Map();
-
-// ==================== WALIDACJA URL ====================
-
-// Wyrażenie regularne do walidacji URL-i YouTube
-// Akceptuje: youtube.com, youtu.be, m.youtube.com (wersja mobilna)
-// ^ - początek stringa
-// (https?:\/\/)? - opcjonalny protokół http:// lub https://
-// (www\.)? - opcjonalne www.
-// (youtube\.com|youtu\.be|m\.youtube\.com) - dozwolone domeny
-// \/(watch|shorts|v|embed|live)? - różne typy ścieżek YouTube
-// /i - case-insensitive (ignoruj wielkość liter)
-// [BUG FIX] Dodano obsługę YouTube Shorts, embed, live
-const YT_REGEX = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|m\.youtube\.com)\/(watch|shorts|v|embed|live)?.*/i;
-
-// ==================== FUNKCJA BUDUJĄCA ARGUMENTY YT-DLP ====================
-
-/**
- * Generuje tablicę argumentów dla procesu yt-dlp
- * na podstawie wybranego formatu pobierania
- * 
- * @param {string} format - Format docelowy: mp3, m4a, mp4-720, mp4-1080, mp4-best
- * @param {string} outputTemplate - Szablon ścieżki pliku wyjściowego
- * @returns {string[]} Tablica argumentów dla yt-dlp
- * 
- * @example
- * buildYtDlpArguments("mp3", "downloads/abc123_%(title)s.%(ext)s")
- * // Zwraca: ["--no-playlist", "-o", "...", "-x", "--audio-format", "mp3", ...]
- */
-function buildYtDlpArguments(format, outputTemplate) {
-  // Bazowe argumenty wspólne dla wszystkich formatów
-  const baseArguments = [
-    "--no-playlist",     // Nie pobieraj całych playlist
-    "-o", outputTemplate, // Szablon nazwy pliku wyjściowego
-    "--newline"          // Każda linia postępu w osobnej linii (ułatwia parsowanie)
-  ];
-  
-  // Jeśli mamy lokalny FFmpeg, wskaż jego lokalizację
-  if (HAS_LOCAL_FFMPEG) {
-    baseArguments.push("--ffmpeg-location", BIN_DIR);
-  }
-  
-  // Dodaj argumenty specyficzne dla formatu
-  switch (format) {
-    case "mp3":
-      // Ekstrakcja tylko audio i konwersja do MP3
-      return [
-        ...baseArguments,
-        "-x",                    // Extract audio only
-        "--audio-format", "mp3", // Format wyjściowy: MP3
-        "--audio-quality", "192K" // Jakość: 192 kbps
-      ];
-      
-    case "m4a":
-      // Pobierz najlepsze audio w formacie M4A
-      return [
-        ...baseArguments,
-        "-f", "bestaudio[ext=m4a]/bestaudio"
-      ];
-      
-    case "mp4-720":
-      // Wideo max 720p + najlepsze audio, scalone do MP4
-      return [
-        ...baseArguments,
-        "-f", "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]/best[height<=720]",
-        "--merge-output-format", "mp4"
-      ];
-      
-    case "mp4-1080":
-      // Wideo max 1080p + najlepsze audio, scalone do MP4
-      return [
-        ...baseArguments,
-        "-f", "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best[height<=1080]",
-        "--merge-output-format", "mp4"
-      ];
-      
-    default: // mp4-best
-      // Najlepsza jakość wideo + audio
-      return [
-        ...baseArguments,
-        "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
-        "--merge-output-format", "mp4"
-      ];
-  }
-}
 
 // ==================== ENDPOINT: START POBIERANIA ====================
 

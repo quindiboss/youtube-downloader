@@ -1,8 +1,8 @@
-# PROJOPP_AP_e6 - YouTube Downloader (React)
+# PROJOPP_AP_e7 - YouTube Downloader (React)
 
-**Wersja:** 0.6
+**Wersja:** 0.7
 **Autor:** QUINDI
-**Etap:** e6
+**Etap:** e7
 **Stos:** React (Vite) + Node.js/Express + yt-dlp
 
 ## Cel aplikacji
@@ -50,6 +50,13 @@ Frontend napisany w **React**, backend w **Node.js (Express)**.
   (Windows: `winget install yt-dlp.yt-dlp` lub pobierz `yt-dlp.exe`)
 - **FFmpeg** w PATH (dla MP3) – https://ffmpeg.org/download.html
 
+## Testowanie (Etap 7)
+
+- Uruchom `npm install` aby zainstalować zależności testowe.
+- Wykonaj `npm test` aby uruchomić automatyczne testy jednostkowe.
+- Testy sprawdzają logikę budowania argumentów `yt-dlp` i walidację URL.
+- Dokumentacja testów znajduje się w `docs/TESTOWANIE_E7.md`.
+
 ## Instalacja i uruchomienie
 
 ```powershell
@@ -86,8 +93,13 @@ konkowski2/
 │       ├── errors.js       # klasy błędów
 │       └── statusUtils.js  # pomocnicze funkcje
 ├── server/                 # backend Express
-│   └── index.js
+│   ├── index.js
+│   ├── utils.js            # testowalna logika yt-dlp i regex
+│   └── utils.test.js       # unit testy Vitest
 └── downloads/              # pliki tymczasowe (auto-czyszczone)
+
+├── docs/                   # dokumentacja etapów i testowania
+│   └── TESTOWANIE_E7.md
 ```
 
 ## Zastrzeżenie prawne
@@ -96,6 +108,7 @@ Aplikacja edukacyjna. Pobieraj wyłącznie treści, do których masz prawo.
 
 ## Historia wersji
 
+- **0.7** – Etap 7: Testowanie aplikacji (unit testy + dokumentacja testów)
 - **0.6** – Etap 6: UI z wyborem jakości wideo (przyciski jakości)
 - **0.5** – Etap 5: Debugowanie (YouTube Shorts, memory leak, race condition)
 - **0.4** – Etap 4: Prezentacja projektu
