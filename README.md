@@ -1,6 +1,6 @@
 # PROJOPP_AP_e1 - YouTube Downloader (React)
 
-**Wersja:** 0.01 Alpha
+**Wersja:** 0.3
 **Autor:** konkowski2
 **Etap:** e1
 **Stos:** React (Vite) + Node.js/Express + yt-dlp
@@ -95,9 +95,6 @@ Aplikacja edukacyjna. Pobieraj wyłącznie treści, do których masz prawo.
 
 ## Historia wersji
 
-- **1.00** – Clean Code: Proper Error Handling - klasy błędów, przyjazne komunikaty
-- **0.80** – Clean Code: JSDoc Documentation - dokumentacja funkcji, opisowe nazwy
-- **0.60** – Clean Code: DRY - współdzielona konfiguracja formatów (shared/)
-- **0.40** – Clean Code: Extract Functions / SRP - custom hook useDownloader, utils
-- **0.20** – Clean Code: Meaningful Names - opisowe nazwy zmiennych
-- **0.01 Alpha** – React + Node backend, pobieranie MP4/MP3/M4A, pasek postępu
+- **0.3** – Etap 3: Komentarze w HTML, CSS, JS, PHP, Python
+- **0.2** – Etap 2: Clean Code (Meaningful Names, SRP, DRY, JSDoc, Error Handling)
+- **0.1** – Etap 1: React + Node backend, pobieranie MP4/MP3/M4A, pasek postępu
