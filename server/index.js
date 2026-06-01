@@ -32,20 +32,30 @@ const JOBS = new Map();
 
 const YT_REGEX = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|m\.youtube\.com)\/.+/i;
 
-function ytDlpArgs(format, outputTemplate) {
-  const base = ["--no-playlist", "-o", outputTemplate, "--newline"];
-  if (HAS_LOCAL_FFMPEG) base.push("--ffmpeg-location", BIN_DIR);
+/**
+ * Generuje argumenty dla yt-dlp na podstawie wybranego formatu
+ * @param {string} format - Format docelowy: mp3, m4a, mp4-720, mp4-1080, mp4-best
+ * @param {string} outputTemplate - Ścieżka szablonu pliku wyjściowego
+ * @returns {string[]} Tablica argumentów dla yt-dlp
+ */
+function buildYtDlpArguments(format, outputTemplate) {
+  const baseArguments = ["--no-playlist", "-o", outputTemplate, "--newline"];
+  
+  if (HAS_LOCAL_FFMPEG) {
+    baseArguments.push("--ffmpeg-location", BIN_DIR);
+  }
+  
   switch (format) {
     case "mp3":
-      return [...base, "-x", "--audio-format", "mp3", "--audio-quality", "192K"];
+      return [...baseArguments, "-x", "--audio-format", "mp3", "--audio-quality", "192K"];
     case "m4a":
-      return [...base, "-f", "bestaudio[ext=m4a]/bestaudio"];
+      return [...baseArguments, "-f", "bestaudio[ext=m4a]/bestaudio"];
     case "mp4-720":
-      return [...base, "-f", "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]/best[height<=720]", "--merge-output-format", "mp4"];
+      return [...baseArguments, "-f", "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]/best[height<=720]", "--merge-output-format", "mp4"];
     case "mp4-1080":
-      return [...base, "-f", "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best[height<=1080]", "--merge-output-format", "mp4"];
+      return [...baseArguments, "-f", "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best[height<=1080]", "--merge-output-format", "mp4"];
     default:
-      return [...base, "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", "--merge-output-format", "mp4"];
+      return [...baseArguments, "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", "--merge-output-format", "mp4"];
   }
 }
 
@@ -59,15 +69,15 @@ app.post("/api/start", (req, res) => {
   }
 
   const jobId = crypto.randomBytes(8).toString("hex");
-  const outTemplate = path.join(DOWNLOAD_DIR, `${jobId}_%(title).80s.%(ext)s`);
-  const args = [...ytDlpArgs(format, outTemplate), url];
+  const outputTemplate = path.join(DOWNLOAD_DIR, `${jobId}_%(title).80s.%(ext)s`);
+  const ytDlpArguments = [...buildYtDlpArguments(format, outputTemplate), url];
 
   JOBS.set(jobId, { status: "queued", progress: 0 });
 
   // Używa lokalnego yt-dlp z folderu bin/ (lub z PATH jako fallback)
-  const proc = spawn(YT_DLP_CMD, args, { windowsHide: true });
+  const downloadProcess = spawn(YT_DLP_CMD, ytDlpArguments, { windowsHide: true });
 
-  proc.stdout.on("data", (outputChunk) => {
+  downloadProcess.stdout.on("data", (outputChunk) => {
     const stdoutText = outputChunk.toString();
     const currentJob = JOBS.get(jobId);
     if (!currentJob) return;
@@ -91,12 +101,12 @@ app.post("/api/start", (req, res) => {
     }
   });
 
-  proc.stderr.on("data", (chunk) => {
+  downloadProcess.stderr.on("data", (chunk) => {
     const job = JOBS.get(jobId);
     if (job) job.lastError = chunk.toString().slice(-500);
   });
 
-  proc.on("error", (err) => {
+  downloadProcess.on("error", (err) => {
     const job = JOBS.get(jobId);
     if (job) {
       job.status = "error";
@@ -106,7 +116,7 @@ app.post("/api/start", (req, res) => {
     }
   });
 
-  proc.on("close", (code) => {
+  downloadProcess.on("close", (code) => {
     const job = JOBS.get(jobId);
     if (!job) return;
     if (code === 0) {
